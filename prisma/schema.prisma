@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+// Modelo para registros de auditoría
+model AuditLog {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String?  @db.ObjectId
+  userEmail     String?
+  action        String
+  resourceType  String
+  resourceId    String?
+  description   String
+  ipAddress     String?
+  userAgent     String?
+  status        String   // "success", "failure", "warning"
+  metadata      Json?
+  timestamp     DateTime @default(now())
+  service       String   // Nombre del servicio que generó el evento
+}
+
+// Modelo para definir políticas de auditoría
+model AuditPolicy {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String   @unique
+  resourceType  String
+  actions       String[] // Array de acciones a auditar ["create", "read", "update", "delete"]
+  isActive      Boolean  @default(true)
+  retentionDays Int      @default(365) // Días que se mantienen los logs
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
