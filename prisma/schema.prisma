@@ -3,28 +3,29 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "mongodb"
-  url      = env("MONGODB_URI")
+  url      = env("DATABASE_URL")
 }
 
 // Modelo para registros de auditoría
 model AuditLog {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String?  @db.ObjectId
-  userEmail     String?
-  action        String
-  resourceType  String
-  resourceId    String?
-  description   String
-  ipAddress     String?
-  userAgent     String?
-  status        String   // "success", "failure", "warning"
-  metadata      Json?
-  timestamp     DateTime @default(now())
-  service       String   // Nombre del servicio que generó el evento
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String?  @db.ObjectId
+  userEmail    String?
+  action       String
+  resourceType String
+  resourceId   String?
+  description  String
+  ipAddress    String?
+  userAgent    String?
+  status       String // "success", "failure", "warning"
+  metadata     Json?
+  timestamp    DateTime @default(now())
+  service      String // Nombre del servicio que generó el evento
 }
 
 // Modelo para definir políticas de auditoría
