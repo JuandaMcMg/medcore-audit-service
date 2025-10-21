@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "medcore-audit-service",
+  "buildCommand": "prisma generate",
   "builds": [
     {
       "src": "src/index.js",
